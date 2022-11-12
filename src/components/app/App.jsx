@@ -11,7 +11,7 @@ const App = () => {
       {name: "One world one boat", viewers: 1234, favourite: false, id: 2},
       {name: "Empire of Osman", viewers: 12345, favourite: true, id: 3},
   ]
-
+  
   return (
     <div className='app font-monospace'>
       <div className='content'>
