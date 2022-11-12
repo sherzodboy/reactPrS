@@ -16,6 +16,8 @@ class MoviesAddForm extends Component {
     })
   }
 
+
+
   render() {
     const {name, views} = this.state
 
@@ -47,5 +49,6 @@ class MoviesAddForm extends Component {
     )
   }
 }
+console.log("123");
 
 export default MoviesAddForm
