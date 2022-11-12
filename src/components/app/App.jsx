@@ -4,6 +4,8 @@ import SearchPanel from "./../search-panel/Search-panel";
 import AppFilter from "./../app-filter/App-filter";
 import MovieList from "../movie-list/Movie-list";
 import MoviesAddForm from "./../movies-add-form/Movies-add-form";
+import { v4 as uuidv4 } from "uuid";
+
 import "./App.css";
 
 class App extends Component {
@@ -22,6 +24,12 @@ class App extends Component {
     this.setState(({ data }) => ({ data: data.filter((c) => c.id !== id) }));
   };
 
+  addForm = (item) => {
+    this.setState(({ data }) => ({
+      data: [...data, { ...item, id: uuidv4() }],
+    }));
+  };
+
   render() {
     const { data } = this.state;
 
@@ -34,7 +42,7 @@ class App extends Component {
             <AppFilter />
           </div>
           <MovieList data={data} onDelete={this.onDelete} />
-          <MoviesAddForm />
+          <MoviesAddForm addForm={this.addForm} />
         </div>
       </div>
     );
