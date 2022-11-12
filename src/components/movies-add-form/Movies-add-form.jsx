@@ -49,6 +49,5 @@ class MoviesAddForm extends Component {
     )
   }
 }
-console.log(1221233454);
 
 export default MoviesAddForm
