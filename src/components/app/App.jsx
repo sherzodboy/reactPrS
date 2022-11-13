@@ -13,9 +13,27 @@ class App extends Component {
     super(props);
     this.state = {
       data: [
-        { name: "You are Mine", viewers: 123, favourite: false, id: 1 },
-        { name: "One world one boat", viewers: 1234, favourite: false, id: 2 },
-        { name: "Empire of Osman", viewers: 12345, favourite: true, id: 3 },
+        {
+          name: "You are Mine",
+          viewers: 123,
+          favourite: false,
+          id: 1,
+          like: false,
+        },
+        {
+          name: "One world one boat",
+          viewers: 1234,
+          favourite: false,
+          id: 2,
+          like: false,
+        },
+        {
+          name: "Empire of Osman",
+          viewers: 12345,
+          favourite: false,
+          id: 3,
+          like: false,
+        },
       ],
     };
   }
@@ -25,8 +43,24 @@ class App extends Component {
   };
 
   addForm = (item) => {
+    const newItem = {
+      name: item.name,
+      viewers: item.viewers,
+      id: uuidv4(),
+      favourite: false,
+      like: false,
+    };
     this.setState(({ data }) => ({
-      data: [...data, { ...item, id: uuidv4() }],
+      data: [...data, newItem],
+    }));
+  };
+
+  onToggleProp = (id, prop) => {
+    this.setState(({ data }) => ({
+      data: data.map((item) => {
+        if (item.id === id) return { ...item, [prop]: !item[prop] };
+        return item;
+      }),
     }));
   };
 
@@ -41,7 +75,11 @@ class App extends Component {
             <SearchPanel />
             <AppFilter />
           </div>
-          <MovieList data={data} onDelete={this.onDelete} />
+          <MovieList
+            onToggleProp={this.onToggleProp}
+            data={data}
+            onDelete={this.onDelete}
+          />
           <MoviesAddForm addForm={this.addForm} />
         </div>
       </div>
