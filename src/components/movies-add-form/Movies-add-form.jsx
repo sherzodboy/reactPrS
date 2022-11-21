@@ -9,6 +9,7 @@ const MoviesAddForm = ({ addForm }) => {
   };
 
   const addFormHandler = (e) => {
+    if (state.name === "" || state.views === "") return;
     e.preventDefault();
     const data = { name: state.name, viewers: state.views };
     addForm(data);
