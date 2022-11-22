@@ -1,17 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AppInfo from "./../app-info/App-info";
 import SearchPanel from "./../search-panel/Search-panel";
 import AppFilter from "./../app-filter/App-filter";
 import MovieList from "../movie-list/Movie-list";
 import MoviesAddForm from "./../movies-add-form/Movies-add-form";
 import { v4 as uuidv4 } from "uuid";
+import Loader from "./../loader/Loader";
 import "./App.css";
 
 const App = () => {
-  const [data, setData] = useState(arr);
-
+  const [data, setData] = useState([]);
   const [term, setTerm] = useState("");
   const [filter, setFilter] = useState("All");
+  const [isLoading, setIsLoading] = useState(false);
 
   const onDelete = (id) => {
     const newArr = data.filter((c) => c.id !== id);
@@ -60,6 +61,24 @@ const App = () => {
   const updateTermHandler = (term) => setTerm(term);
   const updateFilterHandler = (filter) => setFilter(filter);
 
+  useEffect(() => {
+    setIsLoading(true);
+    fetch("https://jsonplaceholder.typicode.com/todos?_start=0&_limit=5")
+      .then((response) => response.json())
+      .then((json) => {
+        const newArr = json.map((item) => ({
+          name: item.title.charAt(0).toUpperCase() + item.title.slice(1),
+          id: item.id,
+          viewers: item.id * 500,
+          favourite: false,
+          like: false,
+        }));
+        setData(newArr);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
+  }, []);
+
   return (
     <div className="app font-monospace">
       <div className="content">
@@ -74,6 +93,7 @@ const App = () => {
             updateFilterHandler={updateFilterHandler}
           />
         </div>
+        {isLoading && <Loader />}
         <MovieList
           onToggleProp={onToggleProp}
           data={filterHandler(searchHandler(data, term), filter)}
@@ -86,27 +106,3 @@ const App = () => {
 };
 
 export default App;
-
-const arr = [
-  {
-    name: "You are Mine",
-    viewers: 123,
-    favourite: false,
-    id: 1,
-    like: false,
-  },
-  {
-    name: "One world one boat",
-    viewers: 1234,
-    favourite: false,
-    id: 2,
-    like: false,
-  },
-  {
-    name: "Empire of Osman",
-    viewers: 12345,
-    favourite: false,
-    id: 3,
-    like: false,
-  },
-];
