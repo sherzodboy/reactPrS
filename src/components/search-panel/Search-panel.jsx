@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { Context } from "./../../context/index";
 import "./Search-panel.css";
 
-const SearchPanel = (props) => {
+const SearchPanel = () => {
   const [term, setTerm] = useState("");
+  //eslint-disable-next-line
+  const { _, dispatch } = useContext(Context);
 
   const updateTermHandler = (e) => {
     const term = e.target.value.toLowerCase();
     setTerm(term);
-    props.updateTermHandler(term);
+    dispatch({ type: "ON_TERM", payload: term });
   };
 
   return (

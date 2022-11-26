@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { Context } from "./../../context/index";
 import "./Movies-add-form.css";
 
 const MoviesAddForm = ({ addForm }) => {
   const [state, setState] = useState({ name: "", views: "" });
+
+  //eslint-disable-next-line
+  const { _, dispatch } = useContext(Context);
 
   const changeHandlerINput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -15,7 +19,7 @@ const MoviesAddForm = ({ addForm }) => {
       name: state.name.charAt(0).toUpperCase() + state.name.slice(1),
       viewers: state.views,
     };
-    addForm(data);
+    dispatch({ type: "ADD_FORM", payload: data });
     setState({ name: "", views: "" });
   };
 
